@@ -34,9 +34,7 @@
             </form:select>
              </br>
              </br>
-             
-             
-          
+
              </br>
              <label for="quarter">Quarter</label>
              <form:input path="quarter" value="" />
