@@ -1,12 +1,4 @@
 package com.project.leaveapplication.model;
-
-
-
-
-
-
-
-
 import java.sql.Date;
 
 import javax.persistence.Entity;
