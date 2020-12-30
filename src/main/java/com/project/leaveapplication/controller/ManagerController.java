@@ -1,5 +1,6 @@
 package com.project.leaveapplication.controller;
 
-public class ManagerController {
 
+public class ManagerController {
+	
 }

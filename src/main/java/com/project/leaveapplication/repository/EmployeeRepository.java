@@ -9,7 +9,7 @@ import com.project.leaveapplication.model.Employee;
 @Repository
 @Transactional
 public interface EmployeeRepository extends JpaRepository<Employee,Long> {
-	
-	
-	
+
+	Employee findByEmail(String email);
+		
 	}

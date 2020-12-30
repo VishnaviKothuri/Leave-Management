@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 
 import javax.persistence.Id;
@@ -42,8 +43,9 @@ private String contactNumber;
 
 private String gender;
 
+private Integer status;
 
-@ManyToMany(cascade = {CascadeType.MERGE})
+@ManyToMany(cascade = {CascadeType.MERGE},fetch = FetchType.EAGER)
 @JoinTable(name = "employee_role", joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 private Set<Role> role = new HashSet<>();
 
@@ -128,6 +130,17 @@ public String getGender() {
 public void setGender(String gender) {
 	this.gender = gender;
 }
+
+
+public Integer getStatus() {
+	return status;
+}
+
+
+public void setStatus(Integer status) {
+	this.status = status;
+}
+
 
 public Collection<Role> getRoles() {
 	return role;
