@@ -28,4 +28,31 @@ public ModelAndView showEmployeeHomePage() {
 	return new ModelAndView("employeeHome");
 }
 
+@RequestMapping(value = "/aboutUs")
+public ModelAndView showAboutusPage() {
+	return new ModelAndView("aboutUs");
+}
+
+
+@RequestMapping(value = "/accessDenied")
+public ModelAndView showaccessDeniedPage() {
+	return new ModelAndView("accessDenied");
+}
+
+@RequestMapping(value = "/leavePolicies")
+public ModelAndView showleavePolicy() {
+	return new ModelAndView("leavePolicies");
+}
+
+@RequestMapping(value = "/managerLeavePolicies")
+public ModelAndView showManagerleavePolicy() {
+	return new ModelAndView("managerLeavePolicies");
+}
+
+@RequestMapping(value = "/adminLeavePolicies")
+public ModelAndView showAdminleavePolicy() {
+	return new ModelAndView("adminLeavePolicies");
+}
+
+
 }

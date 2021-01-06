@@ -1,8 +1,9 @@
 package com.project.leaveapplication.service;
+import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,14 +31,16 @@ public List<LeaveType> findAllTypesofLeaves(){
 
 //add leave records
 public boolean saveLeave(Long employeeId, LeaveRecords leaveRecords) {
-	
+	 //validating the employee leaves before save operation
       if(leavesUsedByEmployee(leaveRecords.getLeaveType().getId(), employeeId,leaveRecords.getQuarter()) 
     	 < leaveRecords.getLeaveType().getNoOfLeaves()) {  
 	  Optional<Employee> optionalEmployee = employeeService.findByEmployeeId(employeeId);
 	  Employee employee = optionalEmployee.get();
 	  employee.addLeave(leaveRecords);
 	  leaveRecords.setEmployee(employee);
+	  leaveRecords.setNoOfDays(countDays(leaveRecords.getFromDate(),leaveRecords.getTodate()));
 	  leaveRecords.setQuarter(getCurrentQuarter());
+	  
 	  leaveRepository.save(leaveRecords);
 	  return true;
       }
@@ -122,17 +125,31 @@ public int getSickLeaves() {
 
 public  List<LeaveRecords> getLeaveRequests() {
 	
-	return leaveRepository.findAll();
+	return leaveRepository.findPendingLeaves();
 }
 
 
 public List<LeaveRecords> getEmployeeLeavesHistory(Long employeeId) {
-	
+	System.out.println("leaveHistory:"+leaveRepository.findEmployeeLeaveHistory(employeeId));
 	return leaveRepository.findEmployeeLeaveHistory(employeeId);
 }
 
 
+public  List<LeaveRecords> getApprovedLeaves() {
+	
+	return leaveRepository.findApprovedLeaves();
+}
 
 
+public  List<LeaveRecords> getRejectedLeaves() {
+	
+	return leaveRepository.findRejectedLeaves();
+}
+
+public Integer countDays(Date startDate, Date endDate) {
+	
+	long diff=endDate.getTime()-startDate.getTime();
+	return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+}
 
 }

@@ -1,12 +1,70 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-<h1>Manager Home</h1>
-</body>
-</html>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ include file="headerManager.jsp" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>
+
+
+				<!-- Header -->
+				<header class="bg-primary text-center py-5 mb-4">
+				  <div class="container">
+				    <h1 class="font-weight-light text-white">
+				    Welcome <security:authentication property="principal.firstName" />
+				    </h1>
+				  </div>
+				</header>
+				
+				<div class="row">
+	<!-- Team Member 1 -->
+	<div class="col-xl-4 col-md-8 mb-4">
+		<div class="card border-0 shadow">
+			<div class="thumnail">
+				<img src="<c:url value="/resources/view.png" />" alt="...">
+			</div>
+			<div class="card-body text-center">
+				<h5 class="card-title mb-0">Team Member</h5>
+				<div class="card-text text-black-50">
+					<button type="button" class="btn btn-primary"
+						onclick="window.location.href='/view-leaves-requests'">view Leave Requests</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Team Member 2 -->
+	<div class="col-xl-4 col-md-8 mb-4">
+		<div class="card border-0 shadow">
+			<div class="thumnail">
+				<img src="<c:url value="/resources/accept.png" />"
+					alt="calculator">
+			</div>
+			<div class="card-body text-center">
+				<h5 class="card-title mb-0">Team Member</h5>
+				<div class="card-text text-black-50">
+					<button type="button" class="btn btn-primary"
+						onclick="window.location.href='/view-approved-leaves'">Approved
+						Leaves</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Team Member 3 -->
+	<div class="col-xl-4 col-md-8 mb-4">
+		<div class="card border-0 shadow">
+			<div class="thumnail">
+				<img src="<c:url value="/resources/reject.jpg" />" alt="...">
+			</div>
+			<div class="card-body text-center">
+				<h5 class="card-title mb-0">Team Member</h5>
+				<div class="card-text text-black-50">
+					<button type="button" class="btn btn-primary"
+						onclick="window.location.href='/view-rejected-leaves'">Rejected
+						Leaves</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<!-- /.row -->
+				
+				  
+				 
+				  

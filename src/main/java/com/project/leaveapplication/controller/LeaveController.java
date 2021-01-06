@@ -30,17 +30,13 @@ return mav;
 
 
 //registering a leave
-@RequestMapping(value = "/addLeave", method = RequestMethod.POST)
-public ModelAndView addLeave(@RequestParam Long employeeId,@ModelAttribute("leave")LeaveRecords leaveRecords){
-leaveRecords.setAcceptReject(2);
+@RequestMapping(value = "/addLeave/{employeeId}", method = RequestMethod.POST)
+public ModelAndView addLeave(@PathVariable Long employeeId,@ModelAttribute("leave")LeaveRecords leaveRecords){
 leaveRecords.setStatus(2);
 if(leaveService.saveLeave(employeeId,leaveRecords)) {
-	return null;
+	return new ModelAndView("employeeHome");
 }
-else {
-	return null;	//return addLeave view
-}
-
+    return new ModelAndView("employeeHome");//add a message
 }
 
 //accepting or rejecting a leave
@@ -50,68 +46,87 @@ public ModelAndView acceptOrRejectLeaves(@PathVariable String action,@PathVariab
 	
 	LeaveRecords leaveRecord = leaveService.getLeaveDetailsOnId(leaveId);
 	if(action.equals("accept")) {
-		leaveRecord.setAcceptReject(1);
-		leaveRecord.setStatus(0);
+		leaveRecord.setStatus(1);
 	}else if(action.equals("reject")) {
-		leaveRecord.setAcceptReject(0);
 		leaveRecord.setStatus(0);	
 	}
 	leaveService.updateLeaveDetails(leaveRecord);
-	return null;
+	return new ModelAndView("redirect:/managerHome");
 }
 
 //deleting a leave
-@RequestMapping(value = "/cancel-leave",method=RequestMethod.POST)
-public ModelAndView cancelLeave(@RequestParam Long leaveId) {
+@RequestMapping(value = "/cancel-leave/{leaveId}/{employeeId}",method=RequestMethod.GET)
+public ModelAndView cancelLeave(@PathVariable Long leaveId,@PathVariable Long employeeId) {
+	ModelAndView mav = new ModelAndView("redirect:/employeeHome");
 	if(leaveService.deleteLeave(leaveId)) {
-		return null;//return myLeaves view
+		return mav;
 	}
-	else {
-		return null;//return myLeaves page with message;
-	}
+	return mav;
+	
 }
 
 //returns employee earned and sick leave balance.
 @RequestMapping(value = "/view-leave-balance/{employeeId}",method=RequestMethod.GET)
+@PreAuthorize("#employeeId == authentication.principal.id")
 public ModelAndView viewLeaveBalance(@PathVariable Long employeeId) {
-	ModelAndView mav = new ModelAndView();
+	ModelAndView mav = new ModelAndView("leaveBalance");
 	mav.addObject("earnedLeaves",leaveService.balanceEarnedLeaves(employeeId));
 	mav.addObject("sickLeaves",leaveService.balanceSickLeaves(employeeId));
-	return null;
+	return mav;
 	
 }
+
 //get all leave requests .
 @RequestMapping(value = "/view-leaves-requests",method=RequestMethod.GET)
 @PreAuthorize("hasAuthority('MANAGER_PRIVILEGE')")
 public ModelAndView getLeaveRequestsOfEveryEmployee() {
-	ModelAndView mav = new ModelAndView();
-	mav.addObject("employeeLeaveRequests",leaveService.getLeaveRequests());
-	return null;
+	ModelAndView mav = new ModelAndView("leaveRequests");
+	mav.addObject("leaveRequests",leaveService.getLeaveRequests());
+	return mav;
+	
+}
+//get approved leaves
+@RequestMapping(value = "/view-approved-leaves",method=RequestMethod.GET)
+@PreAuthorize("hasAuthority('MANAGER_PRIVILEGE')")
+public ModelAndView getApprovedLeaves() {
+	ModelAndView mav = new ModelAndView("approved");
+	mav.addObject("leaveRequests",leaveService.getApprovedLeaves());
+	return mav;
+	
+}
+//get rejected leaves
+@RequestMapping(value = "/view-rejected-leaves",method=RequestMethod.GET)
+@PreAuthorize("hasAuthority('MANAGER_PRIVILEGE')")
+public ModelAndView getRejectedLeaves() {
+	ModelAndView mav = new ModelAndView("rejected");
+	mav.addObject("leaveRequests",leaveService.getRejectedLeaves());
+	return mav;
 	
 }
 
 
 //get all leave records of the employee.
 @RequestMapping(value = "/leave-history/{employeeId}",method=RequestMethod.GET)
+@PreAuthorize("#employeeId == authentication.principal.id")
 public ModelAndView getEmployeeLeaveHistory(@PathVariable Long employeeId) {
-	ModelAndView mav = new ModelAndView();
+	ModelAndView mav = new ModelAndView("leaveDetails");
 	mav.addObject("leaveHistory", leaveService.getEmployeeLeavesHistory(employeeId));
-	return null;
+	return mav;
 }
 
 //editLeave
 @RequestMapping(value = "/editLeave/{leaveId}", method = RequestMethod.GET)
 public ModelAndView editLeave(@PathVariable Long leaveId) {
-ModelAndView mav = new ModelAndView("applyLeave");
+ModelAndView mav = new ModelAndView("editLeave");
 mav.addObject("typesofLeaves",leaveService.findAllTypesofLeaves() );
 mav.addObject("leaveEntry", leaveService.getLeaveDetailsOnId(leaveId));
 return mav;
 
 }
 //save changes
-@RequestMapping(value = "/editLeave/{leaveId}", method = RequestMethod.POST)
-public ModelAndView saveChanges(@PathVariable Long leaveId,@ModelAttribute("leave")LeaveRecords leaveRecords) {
-	 
+@RequestMapping(value = "editLeave/performEdit/{leaveId}/{employeeId}", method = RequestMethod.POST)
+public ModelAndView saveChanges(@PathVariable Long leaveId,@PathVariable Long employeeId,@ModelAttribute("leave")LeaveRecords leaveRecords) {
+	ModelAndView mav = new ModelAndView("/employeeHome");
 	LeaveRecords leaveRecord = leaveService.getLeaveDetailsOnId(leaveId);
 	leaveRecord.setFromDate(leaveRecords.getFromDate());
 	leaveRecord.setTodate(leaveRecords.getTodate());
@@ -119,7 +134,7 @@ public ModelAndView saveChanges(@PathVariable Long leaveId,@ModelAttribute("leav
 	leaveRecord.setLeaveType(leaveRecords.getLeaveType());
 	leaveRecord.setReason(leaveRecords.getReason());
 	leaveService.updateLeaveDetails(leaveRecord);
-	return null;
+    return mav;
 	
 
 

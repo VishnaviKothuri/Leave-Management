@@ -5,11 +5,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
-
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @Configuration
-public class WebConfig {
+public class WebConfig implements WebMvcConfigurer {
 
 	public void configureDefaultServletHandling(
 	        DefaultServletHandlerConfigurer configurer) {
@@ -22,4 +24,14 @@ public class WebConfig {
 	      bean.setSuffix(".jsp");
 	      return bean;
 	   }
+	
+	@Override
+	 public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		 registry
+	      .addResourceHandler("/resources/**")
+	      .addResourceLocations("/resources/","/other-resources/")
+	      .setCachePeriod(3600)
+	      .resourceChain(true)
+	      .addResolver(new PathResourceResolver());
+   }
 }

@@ -15,7 +15,11 @@ import javax.persistence.JoinColumn;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -27,21 +31,30 @@ public class Employee {
 
 private Long id;
 
-
+@Size(min = 3, message = "firstname should have more than one character")
 private String firstName;
 
+@Size(min = 3, message = "lastname should have more than one character")
 private String lastName;
 
+@NotBlank
+@Email(message = "Please enter a valid e-mail address")
 private String email;
 
+@Size(min =6,max=15,message="password should contain atleast 6 characters")
+@Pattern(regexp="^[a-zA-Z0-9]",message="Password should be Alpha-Numeric")
 private String password;
 
-
+@Past(message="Choose appropriate date")
+@NotBlank(message="date required")
 private Date dateOfJoining;
 
+@Size(max=12,message="contact number should be 10 digits")
 private String contactNumber;
 
+
 private String gender;
+
 
 private Integer status;
 

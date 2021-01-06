@@ -29,7 +29,7 @@ private String quarter;
 private String reason;
 
 
-private Integer acceptReject;
+
 
 
 private Integer status;
@@ -42,27 +42,6 @@ public LeaveRecords() {
 }
 
 
-public LeaveRecords(Date fromDate, Date toDate, Integer noOfDays,  String quarter,
-		String reason,Integer acceptReject, Integer status) {
-	super();
-	this.fromDate = fromDate;
-	this.toDate = toDate;
-	this.noOfDays = noOfDays;
-	this.quarter = quarter;
-	this.reason = reason;
-	this.acceptReject=acceptReject;
-	this.status = status;
-	
-}
-
-
-public LeaveRecords(Date fromDate, Date toDate, Integer noOfDays, String quarter, String reason) {
-	this.fromDate=fromDate;
-	this.toDate=toDate;
-	this.noOfDays=noOfDays;
-	this.quarter=quarter;
-	this.reason=reason;
-}
 
 
 public Long getId() {
@@ -123,17 +102,10 @@ public void setReason(String reason) {
 }
 
 
-public Integer isAcceptReject() {
-	return acceptReject;
-}
 
 
-public void setAcceptReject(Integer acceptReject) {
-	this.acceptReject = acceptReject;
-}
 
-
-public Integer isStatus() {
+public Integer getStatus() {
 	return status;
 }
 

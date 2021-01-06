@@ -1,8 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>   
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,7 +44,54 @@ body{
     padding-bottom:0;
     min-height:100%;
 }
-
+ label {
+        display: inline-block;
+        width: 200px;
+        margin-right: 5px;
+        text-align: left;
+        color:black;
+        font-weight:900;
+        font-family:Lucida Console;
+    }
+    input[type=text], input[type=password], select {
+        width: 350px;  
+        border-top-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: groove;
+        font-family:Verdana;    
+        font-size:large;
+        
+    }
+    input[type=radio] {
+        display: inline-block;
+        margin-left: 45px;
+    }
+    input[type=checkbox] {
+        display: inline-block;
+        margin-right: 190px;
+    }  
+    input[type=date] {
+       width: 350px;
+       border-top-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: groove;
+    }  
+    input[type=email] {
+        width: 350px;
+        border-top-style: hidden;
+        border-right-style: hidden;
+        border-left-style: hidden;
+        border-bottom-style: groove;
+    }  
+    .form-actions {
+        padding: 30px;
+        margin: 30px;
+        
+        
+        background-color:#4682b4;
+    }
  h2{
  text-color:black;
  }
@@ -59,14 +104,12 @@ body{
     display:inline-flex;
     list-style: none;
     color:#fff;
-    float:right;
 }
 .menu-bar ul li{
     width: 200px;
     height: 50px;
     margin:15px;
     padding: 15px;
-  
 }
 .menu-bar ul li a{
     text-decoration: none;
@@ -79,6 +122,7 @@ body{
 .sub-menu1 {
     display:none;
 }
+
 .menu-bar ul li:hover .sub-menu1{
     display:block;
     position: absolute;
@@ -130,108 +174,61 @@ body{
   }
   .conatiner{
  	padding:16px;
- 	
   }
-}
-.login-container{
-    margin-top: 1%;
-    margin-bottom: 1%;
-}
-
-.login-form-1{
-    padding: 9%;
-    background:#282726;
-    opacity:0.75;
-    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-}
-.login-form-1 h3{
-    text-align: center;
-    margin-top:30%;
-    margin-bottom:20%;
-    color:#fff;
-    font-family: "Lucida Console", "Courier New", monospace;
-    font-weight:bold;
-    font-size:2.5em;
-}
-.login-form-2{
-    padding: 9%;
-    background: #0062cc;
-    box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-}
-.login-form-2 h3{
-    text-align: center;
-    margin-bottom:12%;
-    color: #fff;
-}
-.btnSubmit{
-    font-weight: 600;
-    width: 50%;
-    color: #0062cc;
-    background-color: #fff;
-    border: none;
-    border-radius: 1.5rem;
-    padding:2%;
-}
-.btnForgetPwd{
-    color: #fff;
-    font-weight: 600;
-    text-decoration: none;
-}
-.btnForgetPwd:hover{
-    text-decoration:none;
-    color:#fff;
-}
  </style>
 <body>
 	<div class="menu-bar">
     <ul>
-        <li><a href="/aboutUs">About us</a></li>
+        <li><a href="/managerHome">Home</a></li>
+        <li><a href="/managerLeavePolicies">View Policies</a></li>
+        <li><a href="#">Logout</a></li>
     </ul>
 </div>
-<div class="container" style="margin-top:125px;margin-bottom:70px;min-height:60vh;">
+<div>
+
+
+
+</div>
+
+<div class="container" style="margin-top:70px;margin-bottom:70px;min-height:70vh;">
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;opacity:0.96;">
 	<div class="card text-center" style="width: 60rem;">
 		<div class="card-body">
 		<div align="center">
-		<div class="container login-container">
-            <div class="row">
-                <div class="col-md-6 login-form-1">
-                   <h3> LEAVE MANAGEMENT SYSTEM</h3>
-                    
-                </div>
-                <div class="col-md-6 login-form-2">
-                    
-                    <h3>Please enter your credentials</h3>
-                    <form name='f' action="/doLogin" method='POST'>
-   <c:if test="${param.error != null}">
-            <div class="form-group" >
-                Failed to login.
-                <c:if test="${SPRING_SECURITY_LAST_EXCEPTION != null}">
-                  Reason: <c:out value="${SPRING_SECURITY_LAST_EXCEPTION.message}" />
-                </c:if>
-            </div>
-        </c:if>
-      <table>
-         <tr>
-            <td>Email</td>
-            <td><input type='text' class = "form-control" name='username' value=''></td>
-           
-         </tr>
-         
-         <tr>
-            <td>Password:</td>
-            <td><input type='password' class = "form-control" name='password' /></td>
-         </tr>
-         <tr>
-            <td><input name="submit" type="submit" class="btn btn-primary" value="submit" /></td>
-         </tr>
-      </table>
-  </form>
-                </div>
-            </div>
-        </div>
-		
-		</div>	
+
+				 <div class="row">
+				    <!-- Policy 1 -->
+				    <div class="col-xl-12 col-md-8 mb-4">
+				      <div class="card border-10 border border-primary shadow">
+				        <div class="card-body text-center">
+				          <h5 class="card-title mb-2">Leave Policy 1</h5>
+			          <div class="card-text text-black-50"><h2 class="text-white bg-primary">Sick Leaves</h2><br><br><p class="text-body">An employee can apply for a maximum of <b>one</b> sick leaves in each quarter resulting to a total of <b>four</b> sick leaves in a year. Depending on the current leave situation leave request will be approved.</p></div>
+				        </div>
+				      </div>
+				    </div>
+				    <!-- Policy 2-->
+				    <div class="col-xl-12 col-md-8 mb-4">
+				      <div class="card border-10 border border-primary shadow">
+				        <div class="card-body text-center">
+				          <h5 class="card-title mb-0">Leave Policy 2</h5>
+				          <div class="card-text text-black-50 "><h2 class="text-white bg-primary">Earned Leaves</h2><br><br><p class="text-body">An employee can apply for a maximum of <b>five</b> earned leaves in each quarter resulting to a total of <b>tewnty</b> sick leaves in a year. Depending on the current leave situation leave request will be approved or rejected.Once rejected wait for a day to re-apply your leave.</p></div>
+				        </div>
+				      </div>
+				    </div>
+				    <!-- Policy 3 -->
+				    <div class="col-xl-12 col-md-8 mb-4">
+				      <div class="card border-10 border border-primary shadow">
+				        <div class="card-body text-center">
+				          <h5 class="card-title mb-0">Team Member</h5>
+				          <div class="card-text text-black-50"><h2 class="text-white bg-primary" >Loss of Pay Leaves</h2><br><br><p class="text-body">Once all earned leaves of an employee are over if they apply for a leave then automatically it becomes a LOP. </p></div>
+				        </div>
+				      </div>
+				    </div>
+				    
+				  </div>
+				  <!-- /.row -->
+
+			</div>	
 		</div>
 	</div>
 	</div>
@@ -241,8 +238,5 @@ body{
       <small>Copyright &copy; Virtusa:Team 6</small>
     </div>
 </footer>
- </body>
+  </body>
 </html>
-
-
-

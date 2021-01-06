@@ -15,8 +15,13 @@ EmployeeRepository employeeRepository;
 @Autowired
 RoleService roleService;
 
-public void saveEmployee(Employee employee) {
+public Boolean saveEmployee(Employee employee) {
+ 
+  if(emailExist(employee.getEmail())) {
+	return false;
+  }
   employeeRepository.save(employee);
+  return true;
 }
 
 
@@ -32,6 +37,7 @@ Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
 Employee employee = optionalEmployee.get();
 if(employee!=null) {
 employee.setStatus(0);
+saveEmployee(employee);
 return true;
 }
 else {
@@ -47,4 +53,25 @@ return false;
 public List<Employee> getAllEmployees() {
 	return employeeRepository.findAll();
 }
+
+
+
+public void updateEmployee(Employee employee,Long employeeId) {
+	Optional<Employee> optionalEmployee = employeeRepository.findById(employeeId);
+	Employee updateEmployee = optionalEmployee.get();
+	updateEmployee.setFirstName(employee.getFirstName());
+	updateEmployee.setLastName(employee.getLastName());
+	updateEmployee.setEmail(employee.getEmail());
+	updateEmployee.setPassword(employee.getPassword());
+	updateEmployee.setDateOfJoining(employee.getDateOfJoining());
+	updateEmployee.setContactNumber(employee.getContactNumber());
+	updateEmployee.setGender(employee.getGender());
+	saveEmployee(updateEmployee);
+}
+
+private boolean emailExist(final String email) {
+    final Employee user = employeeRepository.findByEmail(email);
+    return user != null;
+}
+
 }
