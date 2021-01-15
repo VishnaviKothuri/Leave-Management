@@ -1,6 +1,7 @@
 package com.project.leaveapplication.model;
 
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,7 +18,11 @@ import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
 
 @Entity
-public class Role {
+public class Role  implements Serializable {
+
+	
+	private static final long serialVersionUID = 1L;
+
 
 	@Id
 	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY )

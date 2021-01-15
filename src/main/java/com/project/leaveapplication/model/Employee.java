@@ -1,4 +1,5 @@
 package com.project.leaveapplication.model;
+import java.io.Serializable;
 import java.sql.Date;
 import java.util.Collection;
 import java.util.HashSet;
@@ -24,7 +25,10 @@ import javax.validation.constraints.Size;
 
 @Entity
 
-public class Employee {
+public class Employee  implements Serializable{
+
+
+private static final long serialVersionUID = 1L;
 
 @Id
 @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY )

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import com.project.leaveapplication.repository.LeaveTypeRepository;
 
 @Service
 public class LeaveService {
+
 @Autowired
 LeaveTypeRepository leaveTypeRepository;
 @Autowired
@@ -32,15 +35,12 @@ public List<LeaveType> findAllTypesofLeaves(){
 //add leave records
 public boolean saveLeave(Long employeeId, LeaveRecords leaveRecords) {
 	 //validating the employee leaves before save operation
-      if(leavesUsedByEmployee(leaveRecords.getLeaveType().getId(), employeeId,leaveRecords.getQuarter()) 
-    	 < leaveRecords.getLeaveType().getNoOfLeaves()) {  
+      if(isLeaveValid(leaveRecords,employeeId)) { 
 	  Optional<Employee> optionalEmployee = employeeService.findByEmployeeId(employeeId);
 	  Employee employee = optionalEmployee.get();
 	  employee.addLeave(leaveRecords);
 	  leaveRecords.setEmployee(employee);
-	  leaveRecords.setNoOfDays(countDays(leaveRecords.getFromDate(),leaveRecords.getTodate()));
-	  leaveRecords.setQuarter(getCurrentQuarter());
-	  
+	  leaveRecords.setQuarter(getCurrentQuarter()); 
 	  leaveRepository.save(leaveRecords);
 	  return true;
       }
@@ -50,6 +50,17 @@ public boolean saveLeave(Long employeeId, LeaveRecords leaveRecords) {
       }
 }
 
+
+
+private boolean isLeaveValid(LeaveRecords leaveRecords, Long employeeId) {
+
+	leaveRecords.setNoOfDays(countDays(leaveRecords.getFromDate(),leaveRecords.getTodate()));//set no of days based on from date and to date
+	 
+	return	 leavesUsedByEmployee(leaveRecords.getLeaveType().getId(), employeeId,getCurrentQuarter()) //employee balance leaves
+	    	 < leaveRecords.getLeaveType().getNoOfLeaves()  // total leaves 
+	    	 && leaveRecords.getNoOfDays()
+	    	 <leavesUsedByEmployee(leaveRecords.getLeaveType().getId(), employeeId,getCurrentQuarter()) ;
+}
 
 
 public LeaveRecords getLeaveDetailsOnId(Long leaveId) {
@@ -150,6 +161,14 @@ public Integer countDays(Date startDate, Date endDate) {
 	
 	long diff=endDate.getTime()-startDate.getTime();
 	return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+}
+
+
+public void addLeaveType(LeaveType leaveType) {
+	
+	leaveTypeRepository.save(leaveType);
+	
+	
 }
 
 }

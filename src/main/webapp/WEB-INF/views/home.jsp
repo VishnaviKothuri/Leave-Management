@@ -7,7 +7,7 @@
 				<header class="bg-primary text-center py-5 mb-4">
 				  <div class="container">
 				    <h1 class="font-weight-light text-white">
-				    Welcome <security:authentication property="principal.firstName" />
+				    Welcome,  <security:authentication property="principal.firstName" />
 				    </h1>
 				  </div>
 				</header>
@@ -55,7 +55,7 @@
 				<h5 class="card-title mb-0">Team Member</h5>
 				<div class="card-text text-black-50">
 					<button type="button" class="btn btn-primary"
-						onclick="window.location.href='/view-rejected-leaves'">Add
+						onclick="window.location.href='/leaveType'">Add
 						Leave Types</button>
 				</div>
 			</div>

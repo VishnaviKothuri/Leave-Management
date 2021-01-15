@@ -7,9 +7,10 @@
 
 <%@include file="headerEmployee.jsp"%>
          <security:authentication property="principal.id" var="employeeId" />
+           <h2 style="color:red">${reason}</h2>
         <form:form modelAttribute="leaveEntry" id="leave" action="addLeave/${employeeId}"  method="post">
            
-
+          
             <label for="fromdate">From-Date</label>
             <form:input type ="date" path="fromDate" value="" />
             </br>

@@ -1,5 +1,6 @@
 package com.project.leaveapplication.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,16 +15,19 @@ public ModelAndView showLoginPage() {
 
 
 @RequestMapping(value = "/home")
+@PreAuthorize("hasAuthority('ADMIN_PRIVILEGE')")
 public ModelAndView showHomePage() {
 	return new ModelAndView("home");
 }
 
 @RequestMapping(value = "/managerHome")
+@PreAuthorize("hasAuthority('MANAGER_PRIVILEGE')")
 public ModelAndView showManagerHomePage() {
 	return new ModelAndView("managerHome");
 }
 
 @RequestMapping(value = "/employeeHome")
+@PreAuthorize("hasAuthority('EMPLOYEE_PRIVILEGE')")
 public ModelAndView showEmployeeHomePage() {
 	return new ModelAndView("employeeHome");
 }

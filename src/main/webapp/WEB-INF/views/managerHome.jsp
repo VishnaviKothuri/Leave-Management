@@ -7,7 +7,7 @@
 				<header class="bg-primary text-center py-5 mb-4">
 				  <div class="container">
 				    <h1 class="font-weight-light text-white">
-				    Welcome <security:authentication property="principal.firstName" />
+				    Welcome,  <security:authentication property="principal.firstName" />
 				    </h1>
 				  </div>
 				</header>

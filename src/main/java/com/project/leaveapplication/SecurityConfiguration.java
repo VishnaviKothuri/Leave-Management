@@ -20,6 +20,7 @@ import com.project.leaveapplication.security.EmployeeDetailsService;
 		 prePostEnabled = true, 
 		  securedEnabled = true, 
 		  jsr250Enabled = true)
+
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 	@Autowired
 	private EmployeeDetailsService employeeDetailsService;
@@ -38,9 +39,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
    @Override
     protected void configure(HttpSecurity http) throws Exception { 
 
-	   http
+	           http
 	          .authorizeRequests()
-	        //.antMatchers("/login", "/register").permitAll()
+	          .antMatchers("/aboutUs").permitAll()
 	          .anyRequest()
 	          .authenticated()
 	          .and()
@@ -58,17 +59,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter  {
 	          ;
         
             }
-   
-    
-   
+      
    @SuppressWarnings("deprecation")
    @Bean
    public static NoOpPasswordEncoder passwordEncoder() {
    return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();
-   }
-	
-	
-	
-	
-	
+   }	
 }

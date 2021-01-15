@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.project.leaveapplication.model.LeaveRecords;
+import com.project.leaveapplication.model.LeaveType;
 import com.project.leaveapplication.service.LeaveService;
 
 @Controller
@@ -36,7 +37,13 @@ leaveRecords.setStatus(2);
 if(leaveService.saveLeave(employeeId,leaveRecords)) {
 	return new ModelAndView("employeeHome");
 }
-    return new ModelAndView("employeeHome");//add a message
+    
+    ModelAndView mav = new ModelAndView("applyLeave");
+    mav.addObject("typesofLeaves",leaveService.findAllTypesofLeaves() );
+    mav.addObject("leaveEntry", new LeaveRecords());
+    mav.addObject("reason","Invalid Leave Entry");
+    return mav;
+    
 }
 
 //accepting or rejecting a leave
@@ -139,4 +146,32 @@ public ModelAndView saveChanges(@PathVariable Long leaveId,@PathVariable Long em
 
 
 }
+
+
+//show Leave Type page
+@RequestMapping(value = "/leaveType",method=RequestMethod.GET)
+@PreAuthorize("hasAuthority('ADMIN_PRIVILEGE')")
+public ModelAndView showLeaveType() {
+ModelAndView mav = new ModelAndView("leaveType");
+mav.addObject("leaveType", new LeaveType());
+return mav;
 }
+
+//add Leave Type
+@RequestMapping(value = "/leaveType",method=RequestMethod.POST)
+@PreAuthorize("hasAuthority('ADMIN_PRIVILEGE')")
+public ModelAndView addLeaveType(@ModelAttribute("leaveType")LeaveType leaveType) {
+ 
+  leaveService.addLeaveType(leaveType);
+  ModelAndView mav = new ModelAndView("leaveType");
+  mav.addObject("leaveType", new LeaveType());
+  mav.addObject("message", "success");
+  return mav;
+  
+	  
+  }
+	
+	  
+  
+}
+
