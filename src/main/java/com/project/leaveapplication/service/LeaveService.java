@@ -51,16 +51,22 @@ public boolean saveLeave(Long employeeId, LeaveRecords leaveRecords) {
 }
 
 
-
+//checks whether employee has enough leaves to register the leave.
 private boolean isLeaveValid(LeaveRecords leaveRecords, Long employeeId) {
-
+	
+    
 	leaveRecords.setNoOfDays(countDays(leaveRecords.getFromDate(),leaveRecords.getTodate()));//set no of days based on from date and to date
 	 
 	return	 leavesUsedByEmployee(leaveRecords.getLeaveType().getId(), employeeId,getCurrentQuarter()) //employee balance leaves
 	    	 < leaveRecords.getLeaveType().getNoOfLeaves()  // total leaves 
-	    	 && leaveRecords.getNoOfDays()
-	    	 <leavesUsedByEmployee(leaveRecords.getLeaveType().getId(), employeeId,getCurrentQuarter()) ;
+	    	 && leaveRecords.getNoOfDays()                  
+	    	 <=  leaveRecords.getLeaveType().getNoOfLeaves() 
+	    	 && isWeekday(leaveRecords.getFromDate())
+	    	 && isWeekday(leaveRecords.getTodate());
 }
+
+
+
 
 
 public LeaveRecords getLeaveDetailsOnId(Long leaveId) {
@@ -73,9 +79,7 @@ public LeaveRecords getLeaveDetailsOnId(Long leaveId) {
 
 //update leave records(accept and reject).
 public void updateLeaveDetails(LeaveRecords leaveRecord) {
-
-leaveRepository.save(leaveRecord);
-	
+leaveRepository.save(leaveRecord);	
 }
 
 
@@ -113,16 +117,7 @@ public boolean deleteLeave(Long leaveId) {
 }
 
 
-//returns the current quarter of the month.
-public String getCurrentQuarter() {
-	Calendar calendar = Calendar.getInstance();
-	int month = calendar.get(Calendar.MONTH);
 
-	return (month >= Calendar.JANUARY && month <= Calendar.MARCH)     ? "Q1" :
-	       (month >= Calendar.APRIL && month <= Calendar.JUNE)        ? "Q2" :
-	       (month >= Calendar.JULY && month <= Calendar.SEPTEMBER)    ? "Q3" :
-	                                                                    "Q4";			
-}
 //returns total earned leaves according to company policy
 public int getEarnedLeaves() {
 	return leaveTypeRepository.findById((long) 1000).get().getNoOfLeaves();
@@ -133,7 +128,7 @@ public int getSickLeaves() {
 	return leaveTypeRepository.findById((long) 1001).get().getNoOfLeaves();
 }
 
-
+//returns the pending leaves
 public  List<LeaveRecords> getLeaveRequests() {
 	
 	return leaveRepository.findPendingLeaves();
@@ -157,12 +152,34 @@ public  List<LeaveRecords> getRejectedLeaves() {
 	return leaveRepository.findRejectedLeaves();
 }
 
+//calculates the number of days
 public Integer countDays(Date startDate, Date endDate) {
 	
 	long diff=endDate.getTime()-startDate.getTime();
 	return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 }
 
+//returns the current quarter of the month.
+public String getCurrentQuarter() {
+	Calendar calendar = Calendar.getInstance();
+	int month = calendar.get(Calendar.MONTH);
+
+	return (month >= Calendar.JANUARY && month <= Calendar.MARCH)     ? "Q1" :
+	       (month >= Calendar.APRIL && month <= Calendar.JUNE)        ? "Q2" :
+	       (month >= Calendar.JULY && month <= Calendar.SEPTEMBER)    ? "Q3" :
+	                                                                    "Q4";			
+}
+
+//returns true if the given date is in weekday
+private boolean isWeekday(Date date) {
+
+	Calendar myDate = Calendar.getInstance(); 
+	myDate.setTime(date);
+	myDate.set(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH);
+	int day = myDate.get (Calendar.DAY_OF_WEEK);
+	return ((day >= Calendar.MONDAY) && (day <= Calendar.FRIDAY));
+	
+}
 
 public void addLeaveType(LeaveType leaveType) {
 	

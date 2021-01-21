@@ -18,7 +18,6 @@ import com.project.leaveapplication.service.LeaveService;
 public class LeaveController {
 @Autowired
 LeaveService leaveService;
-
 //Returns leave registration form along with model object.
 @RequestMapping(value = "/addLeave", method = RequestMethod.GET)
 public ModelAndView addLeave() {
@@ -26,24 +25,17 @@ ModelAndView mav = new ModelAndView("applyLeave");
 mav.addObject("typesofLeaves",leaveService.findAllTypesofLeaves() );
 mav.addObject("leaveEntry", new LeaveRecords());
 return mav;
-
 }
-
 
 //registering a leave
 @RequestMapping(value = "/addLeave/{employeeId}", method = RequestMethod.POST)
+@PreAuthorize("#employeeId == authentication.principal.id")
 public ModelAndView addLeave(@PathVariable Long employeeId,@ModelAttribute("leave")LeaveRecords leaveRecords){
 leaveRecords.setStatus(2);
 if(leaveService.saveLeave(employeeId,leaveRecords)) {
 	return new ModelAndView("employeeHome");
-}
-    
-    ModelAndView mav = new ModelAndView("applyLeave");
-    mav.addObject("typesofLeaves",leaveService.findAllTypesofLeaves() );
-    mav.addObject("leaveEntry", new LeaveRecords());
-    mav.addObject("reason","Invalid Leave Entry");
-    return mav;
-    
+}    
+return new ModelAndView("leavePolicies"); 
 }
 
 //accepting or rejecting a leave
@@ -61,8 +53,10 @@ public ModelAndView acceptOrRejectLeaves(@PathVariable String action,@PathVariab
 	return new ModelAndView("redirect:/managerHome");
 }
 
+
 //deleting a leave
 @RequestMapping(value = "/cancel-leave/{leaveId}/{employeeId}",method=RequestMethod.GET)
+@PreAuthorize("#employeeId == authentication.principal.id")
 public ModelAndView cancelLeave(@PathVariable Long leaveId,@PathVariable Long employeeId) {
 	ModelAndView mav = new ModelAndView("redirect:/employeeHome");
 	if(leaveService.deleteLeave(leaveId)) {
@@ -132,6 +126,7 @@ return mav;
 }
 //save changes
 @RequestMapping(value = "editLeave/performEdit/{leaveId}/{employeeId}", method = RequestMethod.POST)
+@PreAuthorize("#employeeId == authentication.principal.id")
 public ModelAndView saveChanges(@PathVariable Long leaveId,@PathVariable Long employeeId,@ModelAttribute("leave")LeaveRecords leaveRecords) {
 	ModelAndView mav = new ModelAndView("/employeeHome");
 	LeaveRecords leaveRecord = leaveService.getLeaveDetailsOnId(leaveId);
@@ -142,10 +137,8 @@ public ModelAndView saveChanges(@PathVariable Long leaveId,@PathVariable Long em
 	leaveRecord.setReason(leaveRecords.getReason());
 	leaveService.updateLeaveDetails(leaveRecord);
     return mav;
-	
-
-
 }
+
 
 
 //show Leave Type page

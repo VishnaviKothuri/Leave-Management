@@ -212,16 +212,18 @@ body{
 
 <div class="container" style="margin-top:70px;margin-bottom:70px;min-height:70vh;">
 <div class="card text-white bg-dark mb-3" style="max-width: 18rem;opacity:0.96;">
+
 	<div class="card text-center" style="width: 60rem;">
 		<div class="card-body">
 		<div align="center">
-
+ 
 				 <div class="row">
 				    <!-- Policy 1 -->
 				    <div class="col-xl-12 col-md-8 mb-4">
 				      <div class="card border-10 border border-primary shadow">
 				        <div class="card-body text-center">
 				          <h5 class="card-title mb-2">Leave Policy 1</h5>
+				          
 			          <div class="card-text text-black-50"><h2 class="text-white bg-primary">Sick Leaves</h2><br><br><p class="text-body">You can apply for a maximum of <b>one</b> sick leaves in each quarter resulting to a total of <b>four</b> sick leaves in a year. Depending on the current leave situation your leave will be approved.</p></div>
 				        </div>
 				      </div>
@@ -235,6 +237,16 @@ body{
 				        </div>
 				      </div>
 				    </div>
+				    <!-- Policy 3 -->
+				    <div class="col-xl-12 col-md-8 mb-4">
+				      <div class="card border-10 border border-primary shadow">
+				        <div class="card-body text-center">
+				          <h5 class="card-title mb-0">Leave Policy 3</h5>
+				          <div class="card-text text-black-50"><h2 class="text-white bg-primary" >Only Weekdays</h2><br><br><p class="text-body">You can't apply leaves on weekends</p></div>
+				        </div>
+				      </div>
+				    </div>
+				    
 				    <!-- Policy 3 -->
 				    <div class="col-xl-12 col-md-8 mb-4">
 				      <div class="card border-10 border border-primary shadow">
