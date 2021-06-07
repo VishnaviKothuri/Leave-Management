@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 
-import com.project.leaveapplication.repository.LeaveRepository;
+
+
+
 
 
 
@@ -19,18 +22,17 @@ import com.project.leaveapplication.repository.LeaveRepository;
 
 
 @SpringBootApplication
+@EnableJdbcHttpSession
 public class LeaveApplication implements CommandLineRunner {
 	
 	//private Logger logger = LoggerFactory.getLogger(this.getClass());
-  @Autowired
-  LeaveRepository leaveRepository;
 	public static void main(String[] args) {
-		SpringApplication.run(LeaveApplication.class, args);
+		SpringApplication.run(new Class[]{ LeaveApplication.class,SecurityConfiguration.class}, args);
 	}
 
 	@Override
 	public void run(String... args) throws Exception {
 
-		
+	
 	}
 }

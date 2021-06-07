@@ -1,11 +1,13 @@
 package com.project.leaveapplication.model;
 
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 
 import javax.persistence.Id;
@@ -14,20 +16,24 @@ import javax.persistence.ManyToMany;
 
 
 import javax.persistence.JoinColumn;
-@Entity
 
-public class Role {
+@Entity
+public class Role  implements Serializable {
+
+	
+	private static final long serialVersionUID = 1L;
+
 
 	@Id
 	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY )
 	private Long id;
 	
 	
-	@ManyToMany(mappedBy="role")
+	@ManyToMany(mappedBy="role",fetch = FetchType.EAGER)
 	
 	private Set<Employee> employee = new HashSet<>();
-	@ManyToMany
-    @JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
+	@ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "role_privilege", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
 	private Set<Privilege> privileges = new HashSet<>();
 	
 	private String name;

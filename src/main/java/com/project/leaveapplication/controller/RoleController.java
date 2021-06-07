@@ -3,6 +3,7 @@ package com.project.leaveapplication.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ RoleService roleService;
 
 	
 @RequestMapping(value = "/addRole", method = RequestMethod.GET)
+@PreAuthorize("hasAuthority('ADMIN_PRIVILEGE')")
 public ModelAndView displayAddRoleForm(@RequestParam Long employeeId) {
 	
 	ModelAndView mav = new ModelAndView("addRole");
@@ -43,10 +45,10 @@ public ModelAndView displayAddRoleForm(@RequestParam Long employeeId) {
 }
 
 
-
 @RequestMapping(value = "/addRole", method = RequestMethod.POST)
+@PreAuthorize("hasAuthority('ADMIN_PRIVILEGE')")
 public ModelAndView addRoleToEmployee(@ModelAttribute("employeeRole")  EmployeeRoleDTO employeeRole) {
-	
+
 	Employee employee = employeeRole.getEmployee();
 	Role role = employeeRole.getRole();
 	employee.addRole(role);
